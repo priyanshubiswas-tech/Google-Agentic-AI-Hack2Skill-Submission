@@ -69,15 +69,37 @@ Using Google AI and Firebase, we built an **intelligent, autonomous agent** that
 ---
 
 ## 🔁 System Architecture (Mermaid)
+graph TB
+  subgraph 🔍 Input Layer
+    A1[User Reports (Text/Image/Video)]
+    A2[External Data (Tweets, APIs)]
+  end
 
-```mermaid
-graph TD
-  A[User Submission / External Feeds] --> B[Firebase Functions]
-  B --> C[Pub/Sub Queue]
-  C --> D[Vertex AI - Gemini]
-  D --> E1[Summarized Event in Firestore]
-  D --> E2[Image/Video Analysis → Event Classification]
-  E1 --> F[Live Map Dashboard (React)]
-  E2 --> F
-  F --> G[Push Notifications to Users]
-  G --> H[User Subscriptions (Firestore)]
+  subgraph ⚙️ Processing Layer
+    B1[Firebase Cloud Functions]
+    B2[Pub/Sub for Queuing]
+    B3[Vertex AI - Gemini & Custom Models]
+  end
+
+  subgraph 📦 Storage Layer
+    C1[Firestore (Event Data)]
+    C2[Storage (Media)]
+    C3[BigQuery (Historical Trends)]
+  end
+
+  subgraph 🎨 Presentation Layer
+    D1[React.js Dashboard]
+    D2[Mapbox + GeoFire]
+    D3[Firebase Auth + Subscriptions]
+  end
+
+  A1 --> B1
+  A2 --> B1
+  B1 --> B2 --> B3
+  B3 --> C1 & C2
+  C1 --> D1
+  C2 --> D1
+  C3 --> D1
+  D1 --> D2
+  D1 --> D3
+
